@@ -2,7 +2,6 @@
 
 #include "TankPlayerController.h"
 
-
 void ATankPlayerController::BeginPlay() 
 {
 	Super::BeginPlay();
@@ -10,7 +9,7 @@ void ATankPlayerController::BeginPlay()
 	auto ControlledTank = GetControlledTank();
 	if (ControlledTank) 
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Possessed: %s"), *(ControlledTank->GetName()));
+		UE_LOG(LogTemp, Warning, TEXT("Player Possessed: %s"), *(ControlledTank->GetName()));
 	}
 	else 
 	{
@@ -19,7 +18,40 @@ void ATankPlayerController::BeginPlay()
 	
 }
 
+// Called every frame
+void ATankPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	AimTowardsCrosshair();
+
+}
+
 ATank * ATankPlayerController::GetControlledTank() const
 {
 	return Cast<ATank> (GetPawn());
+}
+
+void ATankPlayerController::AimTowardsCrosshair()
+{
+	if (!GetControlledTank()) { return; }
+
+	FVector HitLocation; // out parameter
+	if (GetSightRayHitLocation(HitLocation)) // Has side effect, is going to line trace
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *HitLocation.ToString());
+		// TODO Tell controlled tank to aim at this point
+	}
+}
+
+
+// Get world location of linetrace through cross hair
+bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
+{
+	OutHitLocation = FVector (1.0);
+
+	//Cast ray from cross hair into world
+	//Check for collision
+	//if(!collision)
+	//{return nullptr;}
+	return true;
 }
