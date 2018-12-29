@@ -59,7 +59,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	{
 		auto Time = GetWorld()->GetTimeSeconds();
 
-		UE_LOG(LogTemp, Warning, TEXT("%f: No Aim Solve found"), Time);
+		UE_LOG(LogTemp, Warning, TEXT("%f: No Aim Solve NOT found"), Time);
 	}
 	// if no solution found do nothing
 
@@ -73,6 +73,6 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
 
 
-	Barrel->Elevate(5); // TODO remove magic number
+	Barrel->Elevate(DeltaRotator.Pitch); // TODO remove magic number
 }
 	
